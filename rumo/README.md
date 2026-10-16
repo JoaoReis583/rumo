@@ -1,41 +1,29 @@
-# Rumo — cada real com destino
+# Rumo + Supabase (hospedagem na Vercel)
 
-Servidor Node.js + banco SQLite. **Sem dependências**: não precisa de `npm install`.
+Site estático (`index.html`). Login e banco de dados ficam no Supabase. Não há servidor próprio.
 
-## Rodar
-    npm start            # http://localhost:3000
+## 1. Criar o banco
+1. Em supabase.com, crie um projeto.
+2. Vá em **SQL Editor > New query**, cole o conteúdo de `supabase.sql` e clique em **Run**.
 
-Requer Node 22.5 ou superior.
+## 2. Ligar o site ao Supabase
+1. Em **Project Settings > API**, copie a **Project URL** e a chave **anon / public**.
+2. No `index.html`, procure `COLE_AQUI` (início do `<script>`) e cole os dois valores.
+   - A chave anon pode ficar no site: quem protege os dados são as regras (RLS) do `supabase.sql`.
+   - **Nunca** coloque a chave `service_role` no site.
 
-## Variáveis de ambiente
-| Variável | Padrão | Para que serve |
-|---|---|---|
-| `PORT` | 3000 | Porta do servidor |
-| `DATA_DIR` | `./data` | Pasta do banco (`rumo.db`). **Precisa ser um disco persistente** |
-| `NODE_ENV` | — | Use `production` (liga cookie `Secure` e HSTS; exige HTTPS) |
-| `TRUST_PROXY` | — | Use `1` se estiver atrás de proxy/Render/Railway/Fly (para o limite de tentativas ler o IP certo) |
+## 3. Configurar o login (Authentication)
+- **URL Configuration:** em *Site URL*, coloque o endereço do seu site na Vercel (ex.: `https://rumo.vercel.app`).
+  Isso faz o link do e-mail de confirmação voltar para o lugar certo.
+- **Sign In / Providers > Email:** por padrão exige confirmar o e-mail. Para testar mais rápido, desligue
+  *Confirm email*; em produção, prefira deixar ligado.
+- Opcional: em *Password*, ajuste o tamanho mínimo para 8 (o site já exige 8).
+- O e-mail padrão do Supabase tem limite baixo de envios por hora. Para um app público, configure um SMTP próprio
+  (Resend, Brevo etc.) em *Project Settings > Authentication > SMTP*.
 
-## Hospedagem
-Serve qualquer lugar que rode Node ou Docker (VPS, Railway, Fly.io, Render).
-O essencial: **monte um volume persistente em `DATA_DIR`**; sem isso os dados somem a cada deploy.
-Plataformas com disco efêmero (Vercel, Netlify) não servem para este banco.
-
-Com Docker:
-
-    docker build -t rumo .
-    docker run -d -p 3000:3000 -v rumo-data:/data rumo
+## 4. Publicar na Vercel
+Suba esta pasta (`index.html`, `vercel.json`) para um repositório e importe na Vercel,
+ou use `npx vercel` dentro da pasta. Não precisa de build nem de variáveis de ambiente.
 
 ## Backup
-    sqlite3 data/rumo.db ".backup backup.db"
-Copiar o arquivo com o app rodando também funciona se incluir `rumo.db-wal`; prefira o comando acima.
-
-## O que o banco guarda
-- `users`: e-mail único, nome, senha com hash scrypt + sal
-- `sessions`: sessões (só o hash do token), expiram em 30 dias
-- `budgets`: renda em centavos (inteiro)
-- `allocations`: percentual por categoria, validado (0–100)
-
-Mudanças futuras de estrutura: acrescente um item em `MIGRATIONS` no `server.js`.
-
-## API
-`POST /api/register` · `POST /api/login` · `POST /api/logout` · `GET /api/me` · `PUT /api/budget` · `DELETE /api/me` (exclui a conta e os dados) · `GET /healthz`
+No painel do Supabase: *Database > Backups* (planos pagos têm backup diário automático).
