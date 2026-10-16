@@ -106,10 +106,12 @@ function createSession(userId) {
   q.insertSession.run(sha256(token), userId, Math.floor(Date.now() / 1000) + SESSION_DAYS * 86400);
   return token;
 }
-const cookieOpts = () => `Path=/; HttpOnly; SameSite=Lax${PROD ? '; Secure' : ''}`;
-const setSessionCookie = (res, token) =>
-  res.setHeader('Set-Cookie', `rumo_sid=${token}; Max-Age=${SESSION_DAYS * 86400}; ${cookieOpts()}`);
-const clearSessionCookie = (res) => res.setHeader('Set-Cookie', `rumo_sid=; Max-Age=0; ${cookieOpts()}`);
+// "Secure" só quando a conexão é realmente HTTPS (senão o navegador descarta o cookie e o login "some")
+const isHttps = (req) => !!req.socket.encrypted || (TRUST_PROXY && req.headers['x-forwarded-proto'] === 'https');
+const cookieOpts = (req) => `Path=/; HttpOnly; SameSite=Lax${isHttps(req) ? '; Secure' : ''}`;
+const setSessionCookie = (req, res, token) =>
+  res.setHeader('Set-Cookie', `rumo_sid=${token}; Max-Age=${SESSION_DAYS * 86400}; ${cookieOpts(req)}`);
+const clearSessionCookie = (req, res) => res.setHeader('Set-Cookie', `rumo_sid=; Max-Age=0; ${cookieOpts(req)}`);
 function getToken(req) {
   const m = /(?:^|;\s*)rumo_sid=([^;]+)/.exec(req.headers.cookie || '');
   return m ? m[1] : null;
@@ -139,7 +141,7 @@ const SEC_HEADERS = {
   'Content-Security-Policy':
     "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
-  ...(PROD && { 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains' }),
+  ...(PROD && TRUST_PROXY && { 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains' }),
 };
 function send(res, status, body, headers = {}) {
   res.writeHead(status, { ...SEC_HEADERS, ...headers });
@@ -182,7 +184,7 @@ const routes = {
     let id;
     try { id = Number(q.insertUser.run(mail, nm, hash).lastInsertRowid); }
     catch { throw new HttpError(409, 'Este e-mail já tem conta. Use a aba Entrar.'); }
-    setSessionCookie(res, createSession(id));
+    setSessionCookie(req, res, createSession(id));
     json(res, 201, { ok: true });
   },
 
@@ -193,14 +195,14 @@ const routes = {
     const u = validEmail(mail) ? q.userByEmail.get(mail) : null;
     const ok = await verifyPassword(String(password || '').slice(0, 200), u ? u.password_hash : DUMMY_HASH);
     if (!u || !ok) throw new HttpError(401, 'E-mail ou senha incorretos. Confira e tente de novo.');
-    setSessionCookie(res, createSession(u.id));
+    setSessionCookie(req, res, createSession(u.id));
     json(res, 200, { ok: true });
   },
 
   'POST /api/logout': async (req, res) => {
     const t = getToken(req);
     if (t) q.delSession.run(sha256(t));
-    clearSessionCookie(res);
+    clearSessionCookie(req, res);
     json(res, 200, { ok: true });
   },
 
@@ -237,7 +239,7 @@ const routes = {
     const row = q.userByEmail.get(u.email);
     if (!(await verifyPassword(String(password || '').slice(0, 200), row.password_hash))) throw new HttpError(401, 'Senha incorreta.');
     q.delUser.run(u.id);
-    clearSessionCookie(res);
+    clearSessionCookie(req, res);
     json(res, 200, { ok: true });
   },
 };

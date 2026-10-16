@@ -312,7 +312,7 @@ $('#aGo').onclick=async()=>{const mail=$('#aMail').value.trim().toLowerCase(),pw
  if(pw.length<8){err.textContent='A senha precisa ter pelo menos 8 caracteres.';return}
  if(mode==='register'&&!nm){err.textContent='Informe seu nome para criar a conta.';return}
  btn.disabled=true;err.textContent='';
- try{await api('POST',mode==='register'?'/api/register':'/api/login',{email:mail,password:pw,name:nm});$('#aPass').value='';dlg.close();await route()}
+ try{await api('POST',mode==='register'?'/api/register':'/api/login',{email:mail,password:pw,name:nm});$('#aPass').value='';if(await route())dlg.close();else err.textContent='Conta ok, mas o navegador não guardou o login. Use o endereço https:// do site e tente Entrar.'}
  catch(e){err.textContent=e.message}
  finally{btn.disabled=false}};
 $('#logout').onclick=async()=>{try{await api('POST','/api/logout')}catch(e){}await route()};
@@ -347,8 +347,8 @@ async function route(){
  try{const me=await api('GET','/api/me');user=me.user;D={income:me.budget.income,pcts:me.budget.pcts};CATS.forEach(c=>{if(D.pcts[c.id]==null)D.pcts[c.id]=c.p});
   $('#landing').classList.add('hide');$('#dash').classList.remove('hide');
   $('#who').textContent=user.name;$('#hello').textContent='Olá, '+user.name.split(' ')[0]+'!';
-  $('#inc').value=D.income?String(D.income).replace('.',','):'';drawCats();calc();window.scrollTo(0,0)}
- catch(e){user=null;$('#dash').classList.add('hide');$('#landing').classList.remove('hide')}}
+  $('#inc').value=D.income?String(D.income).replace('.',','):'';drawCats();calc();window.scrollTo(0,0);return true}
+ catch(e){user=null;$('#dash').classList.add('hide');$('#landing').classList.remove('hide');return false}}
 playIntro();
 </script>
 </body>
