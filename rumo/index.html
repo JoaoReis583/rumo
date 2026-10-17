@@ -265,8 +265,8 @@ const BRL=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const $=s=>document.querySelector(s);
 const parse=s=>{s=String(s).replace(/[^\d,.]/g,'');if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');else if((s.match(/\./g)||[]).length>1)s=s.replace(/\./g,'');return parseFloat(s)||0};
 /* ===== CONFIGURAÇÃO DO SUPABASE (Project Settings > API) ===== */
-const SUPABASE_URL='COLE_AQUI_A_PROJECT_URL';
-const SUPABASE_ANON_KEY='COLE_AQUI_A_ANON_PUBLIC_KEY'; // a chave "anon/public" pode ficar no site; NUNCA use a service_role
+const SUPABASE_URL='sb_publishable_6vZTKKmw9NNKCnpbdSNPJg_Rxt7rBU-';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0eG1vbnp5dWh5b3Z3ZGVqc2RjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNDc5MzIsImV4cCI6MjEwNzcyMzkzMn0.qlsIaS0dzOxmbm7TsHN8MCKc6SQb1wLEvr8W2JI2UhU'; // a chave "anon/public" pode ficar no site; NUNCA use a service_role
 const SB_READY=!SUPABASE_URL.includes('COLE_')&&!SUPABASE_ANON_KEY.includes('COLE_');
 const sb=SB_READY&&window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 const authMsg=e=>{const m=String((e&&e.message)||'').toLowerCase(),c=e&&e.code;
