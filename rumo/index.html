@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rumo — cada real com destino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0c2e22;--forest:#0f3d2e;--leaf:#1f9d63;--mint:#e6f4ec;--soft:#f4faf6;--line:#cfe5d8;--bg:#fff;--txt:#17382c;--mute:#5b7a6c;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#fff}}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--txt);font:400 16px/1.55 'Instrument Sans',system-ui,sans-serif}
+h1,h2,h3,.disp{font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em;line-height:1.05;color:var(--forest)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+.btn{border:0;border-radius:999px;padding:.8rem 1.4rem;font-weight:600;background:var(--forest);color:#fff;transition:transform .15s,background .15s}
+.btn:hover{background:var(--leaf);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--forest);border:1.5px solid var(--forest)}
+.btn.ghost:hover{background:var(--mint)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 1.25rem}
+.logo{display:flex;align-items:center;gap:.55rem;font:800 1.35rem 'Bricolage Grotesque';color:var(--forest)}
+.mark{width:34px;height:34px;flex:none}
+.hide{display:none!important}
+
+/* ===== ANÚNCIO ===== */
+#intro{position:fixed;inset:0;z-index:50;background:var(--forest);color:#fff;overflow:hidden;display:grid;place-items:center}
+#intro .scene{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:1.5rem;opacity:0;visibility:hidden;transition:opacity .5s}
+#intro .scene.on{opacity:1;visibility:visible}
+#intro{transition:opacity 1.1s ease}
+#intro.fading{pointer-events:none}
+#intro h2{color:#fff;font-size:clamp(2.2rem,7vw,5.2rem);max-width:14ch;margin:0 auto}
+#intro p{color:#b9e3cd;margin-top:1rem;font-size:clamp(1rem,2.2vw,1.35rem)}
+.coin{position:absolute;width:46px;height:46px;border-radius:50%;background:#2fa96c;border:3px solid #9bddb7;display:grid;place-items:center;font:800 1rem 'Bricolage Grotesque';color:#fff;opacity:0}
+.on .coin{animation:drift 3s ease-in-out forwards}
+@keyframes drift{0%{opacity:0;transform:translateY(60px) rotate(0)}25%{opacity:1}100%{opacity:.9;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+.on .rise{animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+.big{font:800 clamp(3.5rem,13vw,9rem) 'Bricolage Grotesque';color:#fff;line-height:1}
+.splitbar{display:flex;gap:0;width:min(760px,90vw);height:74px;border-radius:18px;overflow:hidden;margin:2rem auto 0;transition:gap 1s .9s}
+.on .splitbar{gap:6px}
+.splitbar i{display:block;height:100%;transform-origin:left;transform:scaleX(0)}
+.on .splitbar i{animation:grow .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*.12s)}
+@keyframes grow{to{transform:scaleX(1)}}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:760px;margin:1.4rem auto 0}
+.tags span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:.35rem .8rem;border-radius:999px;font-size:.95rem;opacity:0}
+.on .tags span{animation:rise .5s both;animation-delay:calc(1.3s + var(--i)*.12s)}
+#introDonut{width:min(300px,60vw);margin:0 auto}
+#introDonut circle{stroke-dasharray:0 100;transition:stroke-dasharray 1s cubic-bezier(.2,.8,.2,1)}
+.on .logoBig{animation:rise .8s both}
+#introBar{position:absolute;left:0;bottom:0;height:5px;background:#5cc48c;width:0}
+#skip{position:absolute;right:1rem;top:calc(1rem + env(safe-area-inset-top,0px));background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:.45rem 1rem;z-index:3}
+#skip:hover{background:rgba(255,255,255,.28)}
+
+/* ===== LANDING ===== */
+header.top{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);z-index:10;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+nav{display:flex;gap:.6rem;align-items:center}
+nav a{color:var(--txt);text-decoration:none;padding:.4rem .7rem}
+.hero{padding:4.5rem 0 4rem;background:linear-gradient(180deg,var(--soft),#fff)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+.hero h1{font-size:clamp(2.6rem,6vw,4.8rem)}
+.hero p.lead{font-size:1.2rem;color:var(--mute);margin:1.3rem 0 1.8rem;max-width:34em}
+.demo{background:#fff;border:1.5px solid var(--forest);border-radius:26px;padding:1.4rem;box-shadow:10px 10px 0 var(--mint)}
+.demo label{font-weight:600;font-size:.95rem}
+.money{display:flex;align-items:center;gap:.5rem;border:1.5px solid var(--line);border-radius:14px;padding:.3rem .9rem;margin:.4rem 0 1rem;background:var(--soft)}
+.money span{color:var(--mute);font-weight:600}
+.money input{border:0;background:transparent;font:700 1.7rem 'Bricolage Grotesque';width:100%;padding:.4rem 0;color:var(--forest)}
+.money input:focus{outline:none}
+.money:focus-within{border-color:var(--leaf)}
+.stack{display:flex;height:16px;border-radius:99px;overflow:hidden;gap:2px;margin-bottom:1rem}
+.stack i{display:block;transition:flex .4s}
+.rows{display:grid;gap:.2rem}
+.row{display:flex;align-items:center;gap:.6rem;padding:.32rem 0;border-bottom:1px dashed var(--line);font-size:.97rem}
+.row:last-child{border:0}
+.row b{margin-left:auto;font-variant-numeric:tabular-nums}
+.dot{width:12px;height:12px;border-radius:4px;flex:none}
+section.sec{padding:4.5rem 0}
+section.sec h2{font-size:clamp(2rem,4.5vw,3.2rem);max-width:18ch}
+.sub{color:var(--mute);margin-top:.8rem;max-width:40em}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.5rem;counter-reset:s}
+.step{border-left:4px solid var(--leaf);padding:.2rem 0 .2rem 1.1rem;counter-increment:s}
+.step::before{content:counter(s);font:800 2.6rem 'Bricolage Grotesque';color:var(--leaf)}
+.step h3{font-size:1.4rem;margin:.2rem 0 .4rem}
+.step p{color:var(--mute)}
+.feat{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2.5rem}
+.f{background:var(--mint);border-radius:22px;padding:1.5rem}
+.f:nth-child(1){grid-row:span 2;background:var(--forest);color:#d7efe2}
+.f:nth-child(1) h3{color:#fff}
+.f h3{font-size:1.5rem;margin-bottom:.5rem}
+.f svg{width:44px;height:44px;margin-bottom:.8rem}
+.cta{background:var(--forest);color:#fff;border-radius:32px;padding:3.5rem 2rem;text-align:center;margin:1rem 0 4rem}
+.cta h2{color:#fff;margin:0 auto;max-width:16ch}
+.cta .btn{background:#fff;color:var(--forest);margin-top:1.6rem}
+footer{border-top:1px solid var(--line);padding:1.8rem 0;color:var(--mute);font-size:.92rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.8rem}
+footer button{background:none;border:0;color:var(--forest);text-decoration:underline}
+
+/* ===== AUTH ===== */
+dialog{border:0;border-radius:26px;padding:0;width:min(420px,92vw);box-shadow:0 30px 80px rgba(15,61,46,.35)}
+dialog::backdrop{background:rgba(12,46,34,.6)}
+.auth{padding:2rem}
+.tabs{display:flex;background:var(--mint);border-radius:99px;padding:4px;margin:1.2rem 0}
+.tabs button{flex:1;border:0;background:transparent;border-radius:99px;padding:.55rem;font-weight:600;color:var(--mute)}
+.tabs button[aria-selected=true]{background:#fff;color:var(--forest);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.auth label{display:block;font-weight:600;font-size:.9rem;margin-top:.9rem}
+.auth input{width:100%;margin-top:.3rem;padding:.75rem .9rem;border:1.5px solid var(--line);border-radius:12px;font:inherit}
+.auth input:focus{outline:none;border-color:var(--leaf)}
+.auth .btn{width:100%;margin-top:1.3rem}
+.err{color:#b3261e;font-size:.9rem;min-height:1.3em;margin-top:.7rem}
+.x{float:right;background:none;border:0;font-size:1.6rem;color:var(--mute)}
+
+/* ===== DASHBOARD ===== */
+#dash{min-height:100vh;background:var(--soft)}
+.dtop{background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.dtop .wrap{display:flex;justify-content:space-between;align-items:center;height:66px}
+.who{display:flex;gap:.8rem;align-items:center;color:var(--mute);font-size:.95rem}
+.dgrid{display:grid;grid-template-columns:1.15fr .85fr;gap:1.2rem;padding:1.8rem 0 3rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:1.4rem}
+.card h3{font-size:1.3rem;margin-bottom:.8rem}
+.cat{display:grid;grid-template-columns:1fr auto;gap:.1rem .8rem;padding:.7rem 0;border-bottom:1px solid var(--soft);align-items:center}
+.cat:last-of-type{border:0}
+.cat .n{display:flex;gap:.55rem;align-items:center;font-weight:600}
+.cat small{grid-column:1/-1;color:var(--mute);font-size:.85rem}
+.cat .v{text-align:right;font:700 1.1rem 'Bricolage Grotesque';font-variant-numeric:tabular-nums;color:var(--forest)}
+.cat input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--leaf)}
+.pill{display:inline-block;padding:.25rem .7rem;border-radius:99px;font-weight:600;font-size:.88rem;background:var(--mint);color:var(--forest)}
+.pill.bad{background:#fde7e4;color:#b3261e}
+.pill:empty{display:none}
+.donutwrap{position:relative;width:min(260px,100%);margin:0 auto}
+.donutwrap .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donutwrap .mid b{font:800 1.5rem 'Bricolage Grotesque';color:var(--forest)}
+.donutwrap .mid span{font-size:.82rem;color:var(--mute)}
+.meter{height:12px;border-radius:99px;background:var(--mint);overflow:hidden;margin:.6rem 0}
+.meter i{display:block;height:100%;background:var(--leaf);border-radius:99px;transition:width .5s}
+.tip{background:var(--forest);color:#d7efe2;border-radius:18px;padding:1.1rem 1.2rem;margin-top:1rem}
+.tip b{color:#fff}
+@media(max-width:860px){.hero .wrap,.dgrid,.steps,.feat{grid-template-columns:1fr}.f:nth-child(1){grid-row:auto}nav a{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ANÚNCIO -->
+<div id="intro" role="region" aria-label="Anúncio do Rumo">
+  <button id="skip">Pular anúncio</button>
+  <div class="scene" data-d="3200">
+    <div id="coins"></div>
+    <div style="position:relative"><h2 class="rise">O salário cai. Some. E você nem viu para onde.</h2></div>
+  </div>
+  <div class="scene" data-d="3200">
+    <div><p class="rise" style="margin:0 0 .6rem">Você informa só uma coisa</p><div class="big rise" id="introNum">R$ 0</div><p class="rise" style="animation-delay:.5s">a sua renda do mês</p></div>
+  </div>
+  <div class="scene" data-d="4200">
+    <div><h2 class="rise" style="max-width:20ch">O Rumo divide tudo na hora.</h2><div class="splitbar" id="introSplit"></div><div class="tags" id="introTags"></div></div>
+  </div>
+  <div class="scene" data-d="3200">
+    <div><svg id="introDonut" viewBox="0 0 36 36"></svg><h2 class="rise" style="margin-top:1.2rem;max-width:22ch">Reserva, contas e lazer. Cada um no seu lugar.</h2></div>
+  </div>
+  <div class="scene" data-d="3600">
+    <div class="logoBig"><svg viewBox="0 0 48 48" width="96" height="96"><circle cx="24" cy="24" r="22" fill="#fff"/><path d="M14 31c4-1 6-5 8-9s4-7 12-8c-1 8-4 10-8 12s-6 4-12 5z" fill="#1f9d63"/><path d="M14 36c4-8 10-13 18-17" stroke="#0f3d2e" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+    <h2 style="margin-top:1rem;font-size:clamp(3rem,10vw,6.5rem)">Rumo</h2><p>Cada real com destino.</p></div>
+  </div>
+  <div id="introBar"></div>
+</div>
+
+<!-- LANDING -->
+<div id="landing" class="hide">
+  <header class="top"><div class="wrap">
+    <div class="logo" id="brand"></div>
+    <nav><a href="#como">Como funciona</a><a href="#recursos">Recursos</a><button class="btn ghost" data-auth="login">Entrar</button><button class="btn" data-auth="register">Criar conta</button></nav>
+  </div></header>
+  <main>
+  <section class="hero"><div class="wrap">
+    <div>
+      <h1>Seu salário, dividido antes de acabar.</h1>
+      <p class="lead">Digite quanto você ganha por mês. O Rumo mostra na hora quanto vai para a reserva, a comida, a moradia e o lazer, e você ajusta do seu jeito.</p>
+      <button class="btn" data-auth="register">Começar grátis</button>
+      <button class="btn ghost" id="replay">Rever anúncio</button>
+    </div>
+    <div class="demo">
+      <label for="demoIn">Teste agora: qual a sua renda mensal?</label>
+      <div class="money"><span>R$</span><input id="demoIn" inputmode="decimal" value="3500" aria-label="Renda mensal"></div>
+      <div class="stack" id="demoStack"></div>
+      <div class="rows" id="demoRows"></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="como"><div class="wrap">
+    <h2>Três passos e o mês já está organizado.</h2>
+    <div class="steps">
+      <div class="step"><h3>Crie sua conta</h3><p>Leva menos de um minuto. Só e-mail e senha.</p></div>
+      <div class="step"><h3>Informe sua renda</h3><p>Um único número: o que entra todo mês.</p></div>
+      <div class="step"><h3>Receba a divisão</h3><p>Oito categorias com valores em reais, prontas para você seguir ou ajustar.</p></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="recursos" style="background:#fff;padding-top:0"><div class="wrap">
+    <h2>Pensado para quem nunca teve planilha.</h2>
+    <div class="feat">
+      <div class="f"><svg viewBox="0 0 48 48" fill="none" stroke="#9bddb7" stroke-width="3" stroke-linecap="round"><circle cx="24" cy="24" r="18"/><path d="M24 24V6M24 24l13 13"/></svg><h3>Divisão sugerida e editável</h3><p>Começamos com uma base equilibrada. Mexa nos controles e veja o gráfico e os valores mudarem na hora, com aviso quando a soma passa de 100%.</p></div>
+      <div class="f"><svg viewBox="0 0 48 48" fill="none" stroke="#1f9d63" stroke-width="3" stroke-linecap="round"><path d="M8 38V20M20 38V10M32 38V26M44 38H4"/></svg><h3>Meta da reserva de emergência</h3><p>Quantos meses até juntar o equivalente a 6 meses de gastos essenciais.</p></div>
+      <div class="f"><svg viewBox="0 0 48 48" fill="none" stroke="#1f9d63" stroke-width="3" stroke-linecap="round"><rect x="8" y="6" width="32" height="36" rx="6"/><path d="M16 18h16M16 26h16M16 34h8"/></svg><h3>Salvo na sua conta</h3><p>Volte quando quiser: sua renda e sua divisão ficam guardadas.</p></div>
+    </div>
+    <div class="cta" style="margin-top:3rem"><h2>Dê um destino ao seu dinheiro hoje.</h2><button class="btn" data-auth="register">Criar minha conta</button></div>
+  </div></section>
+  </main>
+  <footer><div class="wrap"><span>© 2026 Rumo. Controle financeiro pessoal.</span><button id="replay2">Rever anúncio</button></div></footer>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash" class="hide">
+  <div class="dtop"><div class="wrap"><div class="logo" id="brand2"></div><div class="who"><span id="who"></span><button class="btn ghost" id="logout">Sair</button></div></div></div>
+  <div class="wrap">
+    <div style="padding-top:1.8rem"><h1 style="font-size:clamp(1.8rem,4vw,2.6rem)" id="hello">Olá!</h1><p class="sub">Informe sua renda do mês e veja para onde cada parte dela deve ir.</p></div>
+    <div class="dgrid">
+      <div>
+        <div class="card" style="margin-bottom:1.2rem">
+          <label for="inc" style="font-weight:600">Renda mensal líquida</label>
+          <div class="money"><span>R$</span><input id="inc" inputmode="decimal" placeholder="0,00"></div>
+          <button class="btn ghost" id="reset">Voltar à divisão sugerida</button> <span id="saved" class="pill" role="status"></span>
+        </div>
+        <div class="card"><h3>Sua divisão do mês</h3><div id="cats"></div></div>
+      </div>
+      <div>
+        <div class="card"><h3>Visão geral</h3>
+          <div class="donutwrap"><svg viewBox="0 0 36 36" id="dDonut"></svg><div class="mid"><b id="dTot">100%</b><span>distribuído</span></div></div>
+          <p style="text-align:center;margin-top:.8rem" id="status"></p>
+        </div>
+        <div class="card" style="margin-top:1.2rem"><h3>Reserva de emergência</h3>
+          <p id="resTxt" style="color:var(--mute)">Informe sua renda para ver a meta.</p>
+          <div class="meter"><i id="resBar" style="width:0"></i></div>
+          <div class="tip" id="tip"><b>Dica:</b> comece pela reserva. Pagar a si mesmo primeiro evita que ela sobre "se sobrar".</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<dialog id="authDlg"><div class="auth">
+  <button class="x" id="xAuth" aria-label="Fechar">×</button>
+  <h2 style="font-size:1.8rem" id="authTitle">Entrar no Rumo</h2>
+  <div class="tabs" role="tablist"><button role="tab" id="tLogin" aria-selected="true">Entrar</button><button role="tab" id="tReg" aria-selected="false">Criar conta</button></div>
+  <div id="nameBox" class="hide"><label for="aName">Nome</label><input id="aName" autocomplete="name"></div>
+  <label for="aMail">E-mail</label><input id="aMail" type="email" autocomplete="email">
+  <label for="aPass">Senha (mínimo 8 caracteres)</label><input id="aPass" type="password" autocomplete="current-password">
+  <div class="err" id="aErr" role="alert"></div>
+  <button class="btn" id="aGo">Entrar</button>
+</div></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const CATS=[
+ {id:'mor',n:'Moradia',p:30,c:'#0f3d2e',d:'Aluguel, condomínio, luz, água e internet.',ess:1},
+ {id:'ali',n:'Alimentação',p:15,c:'#1f7a52',d:'Mercado e refeições do dia a dia.',ess:1},
+ {id:'tra',n:'Transporte',p:10,c:'#2fa96c',d:'Combustível, ônibus, aplicativos.',ess:1},
+ {id:'sau',n:'Saúde',p:5,c:'#5cc48c',d:'Plano, remédios e consultas.',ess:1},
+ {id:'res',n:'Reserva de emergência',p:15,c:'#9bddb7',d:'Seu colchão para imprevistos.'},
+ {id:'inv',n:'Investimentos',p:10,c:'#7fb069',d:'Metas de longo prazo.'},
+ {id:'edu',n:'Educação',p:5,c:'#3e6b4f',d:'Cursos, livros, qualificação.'},
+ {id:'laz',n:'Lazer',p:10,c:'#c3e88d',d:'Passeios, hobbies, saídas.'}];
+const BRL=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const $=s=>document.querySelector(s);
+const parse=s=>{s=String(s).replace(/[^\d,.]/g,'');if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');else if((s.match(/\./g)||[]).length>1)s=s.replace(/\./g,'');return parseFloat(s)||0};
+/* ===== CONFIGURAÇÃO DO SUPABASE (Project Settings > API) ===== */
+const SUPABASE_URL='https://ytxmonzyuhyovwdejsdc.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0eG1vbnp5dWh5b3Z3ZGVqc2RjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNDc5MzIsImV4cCI6MjEwNzcyMzkzMn0.qlsIaS0dzOxmbm7TsHN8MCKc6SQb1wLEvr8W2JI2UhU'; // a chave "anon/public" pode ficar no site; NUNCA use a service_role
+const SB_READY=!SUPABASE_URL.includes('COLE_')&&!SUPABASE_ANON_KEY.includes('COLE_');
+const sb=SB_READY&&window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+const authMsg=e=>{const m=String((e&&e.message)||'').toLowerCase(),c=e&&e.code;
+ if(e&&e.code==='exists')return 'Este e-mail já tem conta. Use a aba Entrar.';
+ if(m.includes('invalid login'))return 'E-mail ou senha incorretos. Confira e tente de novo.';
+ if(m.includes('already registered'))return 'Este e-mail já tem conta. Use a aba Entrar.';
+ if(m.includes('not confirmed'))return 'Confirme seu e-mail pelo link que enviamos e depois entre.';
+ if(e&&(e.status===429||c==='over_email_send_rate_limit'||c==='over_request_rate_limit'))return 'Muitas tentativas. Aguarde alguns minutos e tente de novo.';
+ if(m.includes('password'))return 'Senha fraca ou inválida. Use pelo menos 8 caracteres.';
+ return 'Não foi possível concluir. Verifique sua conexão e tente de novo.'};
+const LOGO=`<svg class="mark" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#0f3d2e"/><path d="M14 31c4-1 6-5 8-9s4-7 12-8c-1 8-4 10-8 12s-6 4-12 5z" fill="#5cc48c"/><path d="M14 36c4-8 10-13 18-17" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg><span>Rumo</span>`;
+$('#brand').innerHTML=LOGO;$('#brand2').innerHTML=LOGO;
+
+function donut(svg,items,w=4.2){let off=0,h='<circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e6f4ec" stroke-width="'+w+'"/>';
+ items.forEach((x,i)=>{const p=Math.max(0,x.p);h+=`<circle cx="18" cy="18" r="15.9155" fill="none" stroke="${x.c}" stroke-width="${w}" stroke-dasharray="${p>0?Math.max(p-.6,.1):0} ${100-(p>0?Math.max(p-.6,.1):0)}" stroke-dashoffset="${25-off}"/>`;off+=p});
+ svg.innerHTML=h}
+
+/* ---- Anúncio ---- */
+const scenes=[...document.querySelectorAll('#intro .scene')];let timers=[],raf;
+(function build(){
+ $('#coins').innerHTML=Array.from({length:12},(_,i)=>`<div class="coin" style="left:${6+i*8}%;top:${55+(i%3)*8}%;--x:${(i%2?-1:1)*(20+i*7)}px;--y:${-260-(i%4)*90}px;--r:${i*40}deg;animation-delay:${i*.1}s">R$</div>`).join('');
+ $('#introSplit').innerHTML=CATS.map((c,i)=>`<i style="--i:${i};flex:${c.p};background:${c.c}"></i>`).join('');
+ $('#introTags').innerHTML=CATS.map((c,i)=>`<span style="--i:${i}">${c.n} ${c.p}%</span>`).join('');
+})();
+function countUp(el,to,ms){const t0=performance.now();cancelAnimationFrame(raf);(function f(t){const k=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-k,3);el.textContent=BRL(Math.round(to*e)).replace(/,00$/,'');if(k<1)raf=requestAnimationFrame(f)})(t0)}
+function playIntro(){
+ stopIntro();if(fa)fa.cancel();$('#intro').classList.remove('fading','hide');$('#landing').classList.add('hide');$('#dash').classList.add('hide');window.scrollTo(0,0);
+ const total=scenes.reduce((a,s)=>a+ +s.dataset.d,0),bar=$('#introBar');
+ bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;bar.style.transition=`width ${total}ms linear`;bar.style.width='100%';
+ let t=0;
+ scenes.forEach((s,i)=>{timers.push(setTimeout(()=>{scenes.forEach(x=>x.classList.remove('on'));s.classList.add('on');
+  if(i===1)countUp($('#introNum'),4000,1800);
+  if(i===3){const d=$('#introDonut');donut(d,CATS.map(c=>({p:0,c:c.c})),5);requestAnimationFrame(()=>requestAnimationFrame(()=>donut(d,CATS,5)))}
+ },t));t+=+s.dataset.d});
+ timers.push(setTimeout(endIntro,t));
+}
+function stopIntro(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(raf);scenes.forEach(s=>s.classList.remove('on'))}
+let fa;
+function endIntro(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(raf);const i=$('#intro');if(i.classList.contains('fading'))return;route();i.classList.add('fading');fa=i.animate([{opacity:1},{opacity:0}],{duration:1300,easing:'ease-in-out',fill:'forwards'});fa.onfinish=()=>{i.classList.add('hide');i.classList.remove('fading');fa.cancel();scenes.forEach(s=>s.classList.remove('on'))}}
+$('#skip').onclick=endIntro;$('#replay').onclick=playIntro;$('#replay2').onclick=playIntro;
+
+/* ---- Landing demo ---- */
+function renderDemo(){const v=parse($('#demoIn').value);
+ $('#demoStack').innerHTML=CATS.map(c=>`<i style="flex:${c.p};background:${c.c}" title="${c.n}"></i>`).join('');
+ $('#demoRows').innerHTML=CATS.map(c=>`<div class="row"><span class="dot" style="background:${c.c}"></span>${c.n} <small style="color:var(--mute)">${c.p}%</small><b>${BRL(v*c.p/100)}</b></div>`).join('')}
+$('#demoIn').oninput=renderDemo;renderDemo();
+
+/* ---- Auth ---- */
+let mode='login',user=null;
+const dlg=$('#authDlg');
+function setMode(m){mode=m;const r=m==='register';$('#tLogin').setAttribute('aria-selected',!r);$('#tReg').setAttribute('aria-selected',r);$('#nameBox').classList.toggle('hide',!r);$('#authTitle').textContent=r?'Criar sua conta':'Entrar no Rumo';$('#aGo').textContent=r?'Criar conta':'Entrar';$('#aPass').autocomplete=r?'new-password':'current-password';$('#aErr').textContent=''}
+document.querySelectorAll('[data-auth]').forEach(b=>b.onclick=()=>{setMode(b.dataset.auth);dlg.showModal()});
+$('#tLogin').onclick=()=>setMode('login');$('#tReg').onclick=()=>setMode('register');$('#xAuth').onclick=()=>dlg.close();
+$('#aGo').onclick=async()=>{const mail=$('#aMail').value.trim().toLowerCase(),pw=$('#aPass').value,err=$('#aErr'),btn=$('#aGo'),nm=$('#aName').value.trim();
+ err.style.color='';
+ if(!sb){err.textContent='Falta configurar o Supabase no início do script (URL e chave).';return}
+ if(!/^\S+@\S+\.\S+$/.test(mail)){err.textContent='Digite um e-mail válido, como nome@email.com.';return}
+ if(pw.length<8){err.textContent='A senha precisa ter pelo menos 8 caracteres.';return}
+ if(mode==='register'&&!nm){err.textContent='Informe seu nome para criar a conta.';return}
+ btn.disabled=true;err.textContent='';
+ try{
+  if(mode==='register'){
+   const {data,error}=await sb.auth.signUp({email:mail,password:pw,options:{data:{name:nm}}});
+   if(error)throw error;
+   if(data.user&&data.user.identities&&!data.user.identities.length)throw {code:'exists'};
+   if(!data.session){err.style.color='var(--forest)';err.textContent='Conta criada! Enviamos um link de confirmação para o seu e-mail. Confirme e depois entre.';return}
+  }else{
+   const {error}=await sb.auth.signInWithPassword({email:mail,password:pw});
+   if(error)throw error;
+  }
+  $('#aPass').value='';
+  if(await route())dlg.close();else err.textContent='Entrou, mas não foi possível carregar seus dados. Tente de novo.';
+ }catch(e){err.textContent=authMsg(e)}
+ finally{btn.disabled=false}};
+$('#logout').onclick=async()=>{try{await sb.auth.signOut()}catch(e){}await route()};
+
+/* ---- Dashboard ---- */
+let D={income:0,pcts:{}};
+let sv,hd;
+function saveD(){clearTimeout(sv);const e=$('#saved');e.className='pill';e.textContent='Salvando…';
+ sv=setTimeout(async()=>{try{
+  const {error}=await sb.from('budgets').upsert({user_id:user.id,income_cents:Math.round(Math.min(D.income,1e9)*100),pcts:D.pcts,updated_at:new Date().toISOString()});
+  if(error)throw error;
+  e.className='pill';e.textContent='Salvo na sua conta ✓';clearTimeout(hd);hd=setTimeout(()=>e.textContent='',2500)}
+ catch(err){if(err&&(err.status===401||err.code==='PGRST301')){await route();return}e.className='pill bad';e.textContent='Não foi possível salvar. Verifique sua conexão.'}},500)}
+function drawCats(){$('#cats').innerHTML=CATS.map(c=>`<div class="cat"><div class="n"><span class="dot" style="background:${c.c}"></span>${c.n}</div><div class="v" id="v_${c.id}"></div><small>${c.d}</small><input type="range" min="0" max="60" step="1" value="${D.pcts[c.id]}" data-id="${c.id}" aria-label="Percentual de ${c.n}"></div>`).join('');
+ document.querySelectorAll('#cats input').forEach(r=>r.oninput=()=>{D.pcts[r.dataset.id]=+r.value;saveD();calc()})}
+function calc(){const inc=D.income;let tot=0,ess=0;
+ CATS.forEach(c=>{const p=D.pcts[c.id];tot+=p;const v=inc*p/100;if(c.ess)ess+=v;$('#v_'+c.id).innerHTML=`${BRL(v)} <small style="font:500 .8rem 'Instrument Sans';color:var(--mute)">${p}%</small>`});
+ donut($('#dDonut'),CATS.map(c=>({p:D.pcts[c.id],c:c.c})));
+ $('#dTot').textContent=tot+'%';
+ const s=$('#status');
+ if(tot===100)s.innerHTML='<span class="pill">Tudo distribuído</span>';
+ else if(tot>100)s.innerHTML=`<span class="pill bad">Passou ${tot-100}% da renda. Reduza alguma categoria.</span>`;
+ else s.innerHTML=`<span class="pill bad">Faltam ${100-tot}% para distribuir.</span>`;
+ const res=inc*D.pcts.res/100,goal=ess*6;
+ if(!inc){$('#resTxt').textContent='Informe sua renda para ver a meta.';$('#resBar').style.width='0'}
+ else if(!res){$('#resTxt').textContent='Sem valor para a reserva neste mês. Aumente esse percentual para começar.';$('#resBar').style.width='0'}
+ else{const m=Math.ceil(goal/res);$('#resTxt').innerHTML=`Meta de 6 meses de gastos essenciais: <b>${BRL(goal)}</b>. Guardando ${BRL(res)} por mês, você chega lá em <b>${m} ${m===1?'mês':'meses'}</b>.`;$('#resBar').style.width=Math.min(100,res/goal*100*3)+'%'}
+ const top=CATS.filter(c=>!c.ess&&c.id!=='res').sort((a,b)=>D.pcts[b.id]-D.pcts[a.id])[0];
+ $('#tip').innerHTML=D.pcts.res<10?'<b>Dica:</b> a reserva está abaixo de 10%. Mesmo um valor pequeno, todo mês, protege você de imprevistos.':D.pcts.mor>35?'<b>Dica:</b> moradia acima de 35% aperta o resto do orçamento. Vale rever contas fixas.':'<b>Dica:</b> boa divisão. Revise os percentuais a cada três meses ou quando a renda mudar.'}
+$('#inc').oninput=e=>{D.income=parse(e.target.value);saveD();calc()};
+$('#reset').onclick=()=>{CATS.forEach(c=>D.pcts[c.id]=c.p);saveD();drawCats();calc()};
+
+/* ---- Rotas ---- */
+async function route(){
+ try{
+  if(!sb)throw 0;
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session)throw 0;
+  user=session.user;
+  const {data,error}=await sb.from('budgets').select('income_cents,pcts').eq('user_id',user.id).maybeSingle();
+  if(error)throw error;
+  D={income:data?data.income_cents/100:0,pcts:{...(data?data.pcts:{})}};
+  CATS.forEach(c=>{if(D.pcts[c.id]==null)D.pcts[c.id]=c.p});
+  const nm=(user.user_metadata&&user.user_metadata.name)||user.email.split('@')[0];
+  $('#landing').classList.add('hide');$('#dash').classList.remove('hide');
+  $('#who').textContent=nm;$('#hello').textContent='Olá, '+nm.split(' ')[0]+'!';
+  $('#inc').value=D.income?String(D.income).replace('.',','):'';drawCats();calc();window.scrollTo(0,0);return true}
+ catch(e){user=null;$('#dash').classList.add('hide');$('#landing').classList.remove('hide');return false}}
+playIntro();
+</script>
+</body>
+</html>
