@@ -339,10 +339,7 @@ $('#aGo').onclick=async()=>{const mail=$('#aMail').value.trim().toLowerCase(),pw
   }
   $('#aPass').value='';
   if(await route())dlg.close();else err.textContent='Entrou, mas não foi possível carregar seus dados. Tente de novo.';
- } catch(e) {
-  console.error('Erro real do Supabase:', e);
-  err.textContent = e.message || 'Erro desconhecido';
-}
+ }catch(e){err.textContent=authMsg(e)}
  finally{btn.disabled=false}};
 $('#logout').onclick=async()=>{try{await sb.auth.signOut()}catch(e){}await route()};
 

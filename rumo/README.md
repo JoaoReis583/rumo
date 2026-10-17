@@ -1,29 +1,24 @@
-# Rumo + Supabase (hospedagem na Vercel)
+# Rumo — Supabase
 
-Site estático (`index.html`). Login e banco de dados ficam no Supabase. Não há servidor próprio.
+Aplicação estática que usa **exclusivamente Supabase** para autenticação e persistência dos dados. Não há backend próprio nem banco SQLite.
 
-## 1. Criar o banco
-1. Em supabase.com, crie um projeto.
-2. Vá em **SQL Editor > New query**, cole o conteúdo de `supabase.sql` e clique em **Run**.
+## Configurar o Supabase
 
-## 2. Ligar o site ao Supabase
-1. Em **Project Settings > API**, copie a **Project URL** e a chave **anon / public**.
-2. No `index.html`, procure `COLE_AQUI` (início do `<script>`) e cole os dois valores.
-   - A chave anon pode ficar no site: quem protege os dados são as regras (RLS) do `supabase.sql`.
-   - **Nunca** coloque a chave `service_role` no site.
+1. Crie um projeto em https://supabase.com.
+2. No painel, abra **SQL Editor → New query**, cole o conteúdo de `supabase.sql` e execute.
+3. Em **Project Settings → API**, copie a **Project URL** e a chave pública **anon** (ou publishable, se disponível).
+4. Abra `index.html` e substitua `COLE_AQUI_A_PROJECT_URL` e `COLE_AQUI_A_ANON_PUBLIC_KEY` pelos valores do seu projeto.
+   - A chave pública pode ser usada no navegador porque o acesso é protegido pelas políticas RLS definidas em `supabase.sql`.
+   - **Nunca** exponha a chave `service_role` ou uma chave secreta no frontend.
 
-## 3. Configurar o login (Authentication)
-- **URL Configuration:** em *Site URL*, coloque o endereço do seu site na Vercel (ex.: `https://rumo.vercel.app`).
-  Isso faz o link do e-mail de confirmação voltar para o lugar certo.
-- **Sign In / Providers > Email:** por padrão exige confirmar o e-mail. Para testar mais rápido, desligue
-  *Confirm email*; em produção, prefira deixar ligado.
-- Opcional: em *Password*, ajuste o tamanho mínimo para 8 (o site já exige 8).
-- O e-mail padrão do Supabase tem limite baixo de envios por hora. Para um app público, configure um SMTP próprio
-  (Resend, Brevo etc.) em *Project Settings > Authentication > SMTP*.
+## Configurar autenticação
 
-## 4. Publicar na Vercel
-Suba esta pasta (`index.html`, `vercel.json`) para um repositório e importe na Vercel,
-ou use `npx vercel` dentro da pasta. Não precisa de build nem de variáveis de ambiente.
+No Supabase, em **Authentication → URL Configuration**, configure a `Site URL` para o endereço final do site. Em **Authentication → Sign In / Providers → Email**, escolha se a confirmação de e-mail será obrigatória. Para produção, recomenda-se manter a confirmação habilitada e configurar SMTP próprio.
 
-## Backup
-No painel do Supabase: *Database > Backups* (planos pagos têm backup diário automático).
+## Publicar na Vercel
+
+Importe esta pasta do projeto na Vercel como site estático. Não é necessário instalar dependências, executar servidor Node ou configurar build command. O `index.html` é a página principal e `vercel.json` define cabeçalhos de segurança.
+
+## Dados
+
+Os dados de orçamento ficam na tabela `public.budgets`, com `user_id` ligado a `auth.users`. As políticas RLS restringem cada usuário aos próprios dados. Contas e sessões são gerenciadas pelo Supabase Auth.
