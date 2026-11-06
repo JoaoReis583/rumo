@@ -1,0 +1,12 @@
+{
+  "_leia-me": "Preencha os dados abaixo UMA vez. O build coloca esses valores em todas as páginas legais (privacidade, termos, reembolso, cookies, empresa) e no rodapé. Enquanto um campo estiver vazio, o site mostra [PREENCHER: NOME_DO_CAMPO] na tela, para você não esquecer.",
+  "NOME_EMPRESARIAL": "Braulio Trindade dos Reis",
+  "DOCUMENTO": "021.485.964-30",
+  "ENDERECO": "Rua Dr. Pedro Lopes Cardoso",
+  "CIDADE_UF": "Natal/RN",
+  "EMAIL_SUPORTE": "financerumo@gmail.com",
+  "EMAIL_PRIVACIDADE": "rumo.privacidade@gmail.com",
+  "ENCARREGADO_NOME": "João Levi Pina dos Reis",
+  "SITE_URL": "https://rumo-rumo.vercel.app",
+  "VERSAO_DOCUMENTOS": "2026-11-03"
+}

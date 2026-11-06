@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade — Rumo</title>
+<meta name="description" content="Como o Rumo coleta, usa, compartilha e protege seus dados pessoais, em conformidade com a LGPD, e como exercer seus direitos.">
+<meta property="og:title" content="Política de Privacidade — Rumo">
+<meta property="og:description" content="Como o Rumo coleta, usa, compartilha e protege seus dados pessoais, em conformidade com a LGPD, e como exercer seus direitos.">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/legal.css">
+<script src="/consentimento.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="site"><a href="/" aria-label="Rumo, voltar ao início">← Rumo</a><nav aria-label="Páginas legais"><a href="/">Início</a><a href="/privacidade">Privacidade</a><a href="/termos">Termos</a><a href="/reembolso">Reembolso</a><a href="/cookies">Cookies</a></nav></header>
+<main id="conteudo" class="wrap" tabindex="-1">
+<h1>Política de Privacidade</h1>
+<p class="updated">Versão {{VERSAO_DOCUMENTOS}} · Última atualização: {{DATA_DOCUMENTOS}}</p>
+
+<div class="alert"><b>Resumo em linguagem simples:</b> usamos seus dados só para o Rumo funcionar e para manter a conta segura. Não vendemos seus dados e não usamos seus números financeiros para anúncios. Você pode baixar tudo e apagar sua conta quando quiser. Se usar o assistente de IA, sua pergunta e um resumo do mês vão para um provedor de IA nos Estados Unidos.</div>
+
+<nav class="toc" aria-label="Índice"><b>Neste documento</b><ol>
+<li><a href="#quem">Quem somos</a></li><li><a href="#dados">Dados que coletamos</a></li><li><a href="#ia">Assistente de IA</a></li>
+<li><a href="#compartilha">Com quem compartilhamos</a></li><li><a href="#exterior">Transferência para o exterior</a></li><li><a href="#menores">Crianças e adolescentes</a></li>
+<li><a href="#direitos">Seus direitos</a></li><li><a href="#retencao">Por quanto tempo guardamos</a></li><li><a href="#seguranca">Segurança</a></li>
+<li><a href="#cookies">Cookies</a></li><li><a href="#mudancas">Mudanças</a></li><li><a href="#contato">Contato e ANPD</a></li></ol></nav>
+
+<h2 id="quem">1. Quem somos</h2>
+<p>O Rumo é um serviço de controle financeiro pessoal. O <strong>controlador</strong> dos seus dados pessoais, nos termos da Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018), é:</p>
+<ul>
+<li><strong>{{NOME_EMPRESARIAL}}</strong>, inscrito(a) sob o CNPJ/CPF {{DOCUMENTO}}</li>
+<li>Endereço: {{ENDERECO}}</li>
+<li>Canal de privacidade: <a href="mailto:{{EMAIL_PRIVACIDADE}}">{{EMAIL_PRIVACIDADE}}</a></li>
+<li>Encarregado(a) pelo tratamento de dados pessoais (art. 41 da LGPD): {{ENCARREGADO_NOME}}, pelo mesmo e-mail.</li>
+</ul>
+
+<h2 id="dados">2. Dados que coletamos, para quê e com qual base legal</h2>
+<p>Coletamos só o que é necessário para cada finalidade. Nada além disso é pedido nos formulários do site.</p>
+<div class="tablewrap"><table>
+<caption>Dados, finalidades e bases legais</caption>
+<tr><th scope="col">Dado</th><th scope="col">Para quê</th><th scope="col">Base legal (LGPD, art. 7º)</th></tr>
+<tr><td>Nome, e-mail e senha (ou login com Google)</td><td>Criar e proteger sua conta. A senha fica só no Firebase Authentication, em formato protegido; nós não a vemos.</td><td>Execução de contrato (V)</td></tr>
+<tr><td>Telefone celular, confirmado por código SMS</td><td>Confirmar que a conta é de uma pessoa real, evitar contas duplicadas e abuso do teste grátis, e dar mais segurança à conta.</td><td>Legítimo interesse em prevenir fraude e garantir a segurança (IX); execução de contrato (V)</td></tr>
+<tr><td>Data de nascimento e CPF</td><td>Conferir identidade e idade (os dois são checados na Receita Federal por um provedor de consulta de CPF), impedir mais de uma conta por pessoa e saber se a pessoa é menor de 18 anos para aplicar as proteções legais. <strong>Não guardamos o número do CPF</strong>: guardamos só um código irreversível (hash com chave secreta), que serve para detectar CPF repetido.</td><td>Cumprimento de obrigação legal de proteção de crianças e adolescentes (II); legítimo interesse em prevenir fraude (IX)</td></tr>
+<tr><td>E-mail do responsável (somente menores de 18)</td><td>Pedir e registrar a autorização do responsável legal.</td><td>Obrigação legal (II); consentimento do responsável (I)</td></tr>
+<tr><td>Dados financeiros que você digita: renda, divisão em %, gastos, rendas extras, contas fixas, metas, orçamento mensal</td><td>Fazer o painel funcionar. Não são dados pessoais sensíveis pela definição da LGPD, mas os tratamos com cuidado reforçado.</td><td>Execução de contrato (V)</td></tr>
+<tr><td>Assinatura e pagamento: status, datas, plano e identificadores do cliente/assinatura no Stripe</td><td>Liberar o acesso, cobrar, cancelar e reembolsar. O número do cartão é digitado no ambiente do Stripe; <strong>nós nunca o recebemos nem o guardamos</strong>.</td><td>Execução de contrato (V); obrigação legal fiscal e contábil (II)</td></tr>
+<tr><td>Conversas com a IA, fotos de notas e comandos de voz</td><td>Responder ao que você pediu. Veja a seção 3.</td><td>Consentimento, dado na primeira vez que você usa o assistente (I)</td></tr>
+<tr><td>Histórico da conversa com a IA (opcional)</td><td>Só se você ligar "Salvar histórico na nuvem": guardamos as últimas mensagens para a IA lembrar do contexto. Vem <strong>desligado</strong> por padrão.</td><td>Consentimento (I)</td></tr>
+<tr><td>Código de convite e vínculo de indicação</td><td>Contar amigos indicados e dar o bônus prometido.</td><td>Execução de contrato (V)</td></tr>
+<tr><td>Dados técnicos: endereço IP, data/hora, navegador, registros de erro</td><td>Segurança, limite de abuso e correção de falhas. Em limites de uso guardamos só uma versão embaralhada (hash) do IP.</td><td>Legítimo interesse (IX); obrigação legal de guardar registros de acesso, quando aplicável (II)</td></tr>
+<tr><td>Contagem de eventos de uso (ex.: conta criada, painel aberto) com identificador embaralhado, sem nome nem e-mail</td><td>Entender se o produto funciona e corrigir problemas.</td><td>Legítimo interesse (IX)</td></tr>
+<tr><td>Mensagens que você nos envia (suporte, pedidos de privacidade ou reembolso)</td><td>Responder e comprovar o atendimento.</td><td>Execução de contrato (V); exercício regular de direitos (VI)</td></tr>
+<tr><td>Dados de cookies de marketing (Pixel da Meta)</td><td>Medir anúncios do Rumo. <strong>Só se você aceitar</strong> no aviso de cookies.</td><td>Consentimento (I)</td></tr>
+</table></div>
+<p><strong>O que não fazemos:</strong> não vendemos nem alugamos seus dados; não usamos seus lançamentos, renda ou metas para anúncios; não pedimos acesso à sua conta bancária nem a senhas de bancos.</p>
+
+<h2 id="ia">3. Assistente de IA</h2>
+<div class="alert"><b>Importante:</b> quando você manda uma mensagem ao assistente, enviamos a um provedor de inteligência artificial de terceiros (Google Gemini ou Anthropic Claude, conforme a configuração do serviço) a sua pergunta e um resumo dos seus dados do mês: renda, planejado e gasto por categoria, contas fixas, metas e últimos lançamentos. Se você anexar a foto de uma nota ou comprovante, ela também é enviada.</div>
+<ul>
+<li>O envio só acontece quando <strong>você</strong> envia uma mensagem, e só depois de você aceitar o aviso da primeira utilização. Você pode revogar esse aceite em Configurações, no painel.</li>
+<li>Não enviamos seu nome, e-mail, CPF ou telefone ao provedor de IA.</li>
+<li>A conversa não fica guardada por nós, exceto se você ligar o histórico na nuvem (opcional).</li>
+<li>Usamos a API comercial dos provedores. Segundo os termos deles, o conteúdo enviado por API não é usado para treinar os modelos. Veja os termos do Google Gemini (<a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">ai.google.dev/gemini-api/terms</a>) e a política da Anthropic (<a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">anthropic.com/legal/privacy</a>). O provedor pode guardar o conteúdo por um período limitado para segurança e prevenção de abuso, conforme esses termos.</li>
+<li><strong>Não envie</strong> senhas, números de cartão, documentos ou dados de outras pessoas. Notas fiscais podem trazer CPF/nome de terceiros: se for o caso, cubra esses dados antes de fotografar.</li>
+<li>A IA pode errar. As respostas são sugestões e não produzem efeito jurídico sobre você. Você pode pedir a revisão de qualquer resultado que considere equivocado (art. 20 da LGPD) pelo e-mail de privacidade.</li>
+<li>O reconhecimento de voz é feito pelo seu navegador ou sistema (por exemplo, Chrome usa serviços do Google; Safari usa a Apple). Nós recebemos só o texto transcrito.</li>
+</ul>
+
+<h2 id="compartilha">4. Com quem compartilhamos</h2>
+<p>Compartilhamos dados apenas com empresas que nos ajudam a prestar o serviço (operadores), com autoridades quando a lei exigir e nos casos abaixo:</p>
+<div class="tablewrap"><table>
+<caption>Fornecedores e finalidades</caption>
+<tr><th scope="col">Fornecedor</th><th scope="col">Para quê</th><th scope="col">Onde trata os dados</th></tr>
+<tr><td>Google (Firebase Authentication, Cloud Firestore, verificação por SMS e reCAPTCHA)</td><td>Login, banco de dados, envio e conferência do código SMS, proteção contra robôs</td><td>Brasil ou EUA, conforme a região do projeto; SMS por operadoras parceiras do Google</td></tr>
+<tr><td>Vercel</td><td>Hospedagem do site e das funções de servidor</td><td>EUA e outras regiões</td></tr>
+<tr><td>Stripe</td><td>Cobrança por cartão, faturas, reembolsos e antifraude</td><td>EUA e outras regiões</td></tr>
+<tr><td>Provedor de consulta de CPF (CPFHub)</td><td>Conferir CPF e data de nascimento na Receita Federal</td><td>Conforme o provedor</td></tr>
+<tr><td>Google (Gemini) ou Anthropic (Claude)</td><td>Assistente de IA (seção 3)</td><td>EUA</td></tr>
+<tr><td>Meta Platforms (Pixel e API de Conversões)</td><td>Medir anúncios do Rumo. <strong>Só com o seu consentimento e nunca para menores de 18 anos.</strong> Pode receber o e-mail e o telefone em formato embaralhado (hash) e o valor da compra.</td><td>EUA e outras regiões</td></tr>
+<tr><td>Google Fonts</td><td>Carregar as fontes do site. O Google recebe seu endereço IP e dados do navegador nessa requisição.</td><td>EUA e outras regiões</td></tr>
+</table></div>
+<p>Se o Rumo for vendido ou reorganizado, seus dados podem ser transferidos ao novo responsável, que deverá respeitar esta política, e avisaremos você antes.</p>
+
+<h2 id="exterior">5. Transferência para o exterior</h2>
+<p>Parte dos fornecedores acima trata dados fora do Brasil, principalmente nos Estados Unidos. Isso é uma transferência internacional de dados (art. 33 da LGPD). Ela é feita com base nos mecanismos que a lei permite, como cláusulas contratuais padrão aprovadas pela ANPD (Resolução CD/ANPD nº 19/2024) incluídas nos contratos dos fornecedores, e, no caso do assistente de IA, também com o seu consentimento específico e destacado. Você pode pedir mais informações pelo e-mail de privacidade.</p>
+
+<h2 id="menores">6. Crianças e adolescentes</h2>
+<ul>
+<li>Quem tem menos de 18 anos só usa o Rumo com a autorização de um responsável legal que já tenha conta no Rumo (maior de 18, cadastro completo e e-mail confirmado). Até a autorização, o painel fica bloqueado.</li>
+<li>Com a autorização, o responsável passa a ver gráficos agregados do menor (gastos por mês e categoria, metas e total de contas fixas), <strong>sem</strong> as descrições dos lançamentos. O responsável pode retirar a autorização quando quiser. Ao completar 18 anos, o acesso do menor se torna independente e o acompanhamento termina.</li>
+<li>Tratamos dados de menores no melhor interesse deles (art. 14 da LGPD e Lei nº 15.211/2025, o ECA Digital). Não usamos dados de menores para publicidade direcionada nem para perfilamento comercial, e o Pixel da Meta e a API de Conversões ficam desligados para contas de menores.</li>
+<li>Contratar plano pago por menor exige a autorização e a responsabilidade do responsável legal. Veja os <a href="/termos">Termos de Uso</a>.</li>
+<li>Se você acha que uma criança nos deu dados sem autorização, escreva para <a href="mailto:{{EMAIL_PRIVACIDADE}}">{{EMAIL_PRIVACIDADE}}</a> e apagaremos.</li>
+</ul>
+
+<h2 id="direitos">7. Seus direitos</h2>
+<p>Pelo art. 18 da LGPD você pode, a qualquer momento: confirmar que tratamos seus dados; acessá-los; corrigir dados incompletos ou desatualizados; pedir anonimização, bloqueio ou eliminação de dados desnecessários ou tratados fora da lei; pedir portabilidade; pedir eliminação dos dados tratados com consentimento; saber com quem compartilhamos; saber que pode não consentir e quais as consequências; e <strong>revogar o consentimento</strong>.</p>
+<h3>Como exercer</h3>
+<ul>
+<li><strong>Sozinho, no painel</strong> (Configurações): exportar todos os seus dados em JSON; excluir a conta e os dados; desligar o histórico da IA; revogar o aceite do assistente de IA; abrir as preferências de cookies.</li>
+<li><strong>Por e-mail:</strong> escreva para <a href="mailto:{{EMAIL_PRIVACIDADE}}">{{EMAIL_PRIVACIDADE}}</a> com o assunto "Direitos LGPD", contando qual direito quer exercer e usando o <strong>mesmo e-mail da sua conta</strong> (para termos certeza de que é você; não precisa mandar documentos).
+<div class="cta-row"><a class="btn" href="mailto:{{EMAIL_PRIVACIDADE}}?subject=Direitos%20LGPD&amp;body=Quero%20exercer%20o%20seguinte%20direito%20(acesso%2C%20corre%C3%A7%C3%A3o%2C%20exclus%C3%A3o%2C%20portabilidade%2C%20revoga%C3%A7%C3%A3o%20de%20consentimento%20ou%20outro)%3A%0A%0AE-mail%20da%20minha%20conta%3A%20">Abrir e-mail de pedido LGPD</a></div></li>
+<li><strong>Prazos:</strong> confirmamos a existência do tratamento e damos acesso em formato simplificado de imediato, e a declaração completa em até 15 dias (art. 19). Não cobramos para atender.</li>
+</ul>
+<p>Se não ficar satisfeito, você pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD) em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a> e procurar o Procon ou o Judiciário.</p>
+
+<h2 id="retencao">8. Por quanto tempo guardamos</h2>
+<div class="tablewrap"><table>
+<caption>Prazos de guarda</caption>
+<tr><th scope="col">Dado</th><th scope="col">Prazo</th></tr>
+<tr><td>Conta, dados financeiros, telefone, cadastro (nascimento, código do CPF)</td><td>Enquanto a conta existir. Ao excluir a conta, apagamos tudo dos sistemas de produção imediatamente; eventuais cópias de segurança são eliminadas em até 30 dias.</td></tr>
+<tr><td>Registros de pagamento, faturas e reembolsos (no Stripe e nos nossos registros)</td><td>5 anos, para cumprir obrigações fiscais e contábeis e permitir defesa em processos.</td></tr>
+<tr><td>Mensagens de suporte e pedidos de privacidade</td><td>Até 5 anos após o atendimento, para comprovar o que foi pedido e respondido.</td></tr>
+<tr><td>Registros de acesso e segurança</td><td>Pelo menor prazo possível; quando a lei exigir (Marco Civil da Internet, art. 15), por 6 meses.</td></tr>
+<tr><td>Histórico da IA</td><td>Só se você ligar a opção; apagado ao desligá-la ou ao excluir a conta.</td></tr>
+<tr><td>Consentimentos e aceite dos Termos (data e versão)</td><td>Enquanto a conta existir e, depois, pelo prazo de prescrição, como prova.</td></tr>
+</table></div>
+
+<h2 id="seguranca">9. Segurança</h2>
+<p>Usamos HTTPS em todo o site; login protegido pelo Firebase Authentication; regras de acesso no banco para que cada pessoa leia e grave apenas os próprios dados; verificação do token de login no servidor; limites contra abuso; chaves secretas só no servidor; e CPF guardado apenas como código irreversível. Nenhum sistema é 100% seguro. Em caso de incidente que possa causar risco ou dano relevante, avisaremos você e a ANPD nos prazos legais.</p>
+
+<h2 id="cookies">10. Cookies e armazenamento no navegador</h2>
+<p>Usamos o armazenamento essencial para o site funcionar e, só com o seu consentimento, o Pixel da Meta. Detalhes, lista e botão de preferências na <a href="/cookies">Política de Cookies</a>.</p>
+
+<h2 id="mudancas">11. Mudanças nesta política</h2>
+<p>Quando mudarmos algo relevante, avisaremos por e-mail e no site, com pelo menos 15 dias de antecedência, e atualizaremos a data no topo. Se a mudança exigir um novo consentimento, pediremos de novo.</p>
+
+<h2 id="contato">12. Contato</h2>
+<p>Dúvidas, pedidos e reclamações sobre dados pessoais: <a href="mailto:{{EMAIL_PRIVACIDADE}}">{{EMAIL_PRIVACIDADE}}</a>. Outros assuntos: <a href="mailto:{{EMAIL_SUPORTE}}">{{EMAIL_SUPORTE}}</a>. Documentos relacionados: <a href="/termos">Termos de Uso</a>, <a href="/cookies">Política de Cookies</a> e <a href="/reembolso">Reembolso e Cancelamento</a>.</p>
+
+<footer class="site"><p>© {{ANO}} Rumo · {{NOME_EMPRESARIAL}} · {{DOCUMENTO}}</p><p>{{ENDERECO}}</p><p><a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a> · <a href="/reembolso">Reembolso e Cancelamento</a> · <a href="/cookies">Cookies</a> · <a href="/acessibilidade">Acessibilidade</a> · <a href="/empresa">Dados da empresa</a> · <button type="button" class="linklike" data-cookie-prefs>Preferências de cookies</button></p></footer>
+</main>
+</body>
+</html>

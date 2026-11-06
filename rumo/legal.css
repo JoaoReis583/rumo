@@ -1,0 +1,47 @@
+/* Estilo compartilhado das páginas legais do Rumo. Cores conferidas para contraste WCAG AA (mín. 4,5:1). */
+:root{--ink:#0c2e22;--forest:#0f3d2e;--leaf:#17784c;--leaf-bright:#1f9d63;--mint:#e6f4ec;--soft:#f4faf6;--line:#b9d6c6;--bg:#fff;--txt:#17382c;--mute:#45624f;--warn-bg:#fff3d6;--warn-txt:#6b4500;color-scheme:light}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:5rem}
+body{background:var(--bg);color:var(--txt);font:400 16px/1.7 'Instrument Sans',system-ui,sans-serif;padding-bottom:4rem}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em;color:var(--forest)}
+a{color:var(--leaf);text-underline-offset:2px}
+a:hover{color:var(--forest)}
+:focus-visible{outline:3px solid #0f3d2e;outline-offset:2px;box-shadow:0 0 0 2px #fff;border-radius:4px}
+.skip{position:absolute;left:-9999px;top:0;background:#fff;color:var(--forest);padding:.8rem 1.1rem;z-index:100;font-weight:700;border:2px solid var(--forest);border-radius:0 0 12px 0}
+.skip:focus{left:0}
+header.site{background:var(--forest);padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+header.site a{color:#b8ecce;text-decoration:none;font:800 1.2rem 'Bricolage Grotesque',system-ui,sans-serif}
+header.site a:hover{color:#fff;text-decoration:underline}
+header.site nav{margin-left:auto;display:flex;gap:1rem;flex-wrap:wrap}
+header.site nav a{font:500 .95rem 'Instrument Sans',system-ui,sans-serif}
+.wrap{max-width:780px;margin:0 auto;padding:2.5rem 1.5rem}
+.updated{color:var(--mute);font-size:.92rem;margin-top:.4rem}
+h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:.3rem}
+h2{font-size:1.4rem;margin:2.2rem 0 .6rem;padding-top:.6rem;border-top:2px solid var(--mint)}
+h3{font-size:1.1rem;margin:1.2rem 0 .4rem}
+p,li{margin-top:.5rem}
+ul,ol{padding-left:1.4rem}
+.alert{background:var(--mint);border-left:4px solid var(--leaf);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.5rem 0}
+.alert.warn{background:var(--warn-bg);border-left-color:#b87400;color:var(--warn-txt)}
+.alert.warn b{color:var(--warn-txt)}
+.alert b{color:var(--forest)}
+.tablewrap{overflow-x:auto;margin:1rem 0}
+table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:520px}
+caption{text-align:left;font-weight:700;color:var(--forest);padding:.4rem 0}
+th,td{text-align:left;padding:.6rem .8rem;border:1px solid var(--line);vertical-align:top}
+th{background:var(--soft);font-weight:600;color:var(--forest)}
+tr:nth-child(even) td{background:var(--soft)}
+.toc{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:1rem 1.4rem;margin:1.4rem 0}
+.toc ol{columns:2;column-gap:2rem}
+@media (max-width:640px){.toc ol{columns:1}}
+.btn{display:inline-block;background:var(--forest);color:#fff;border:2px solid var(--forest);border-radius:999px;padding:.7rem 1.3rem;font:600 1rem 'Instrument Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;min-height:44px}
+.btn:hover{background:#17604a;color:#fff}
+.btn.ghost{background:#fff;color:var(--forest)}
+.btn.ghost:hover{background:var(--soft);color:var(--forest)}
+.cta-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem}
+mark{background:#fff0a8;color:#3a2f00;padding:0 .2rem;border-radius:3px}
+footer.site{text-align:center;margin-top:3rem;color:var(--mute);font-size:.9rem}
+footer.site a{margin:0 .35rem}
+footer.site button.linklike{background:none;border:0;color:var(--leaf);font:inherit;text-decoration:underline;cursor:pointer;padding:.3rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{header.site,.skip,.cta-row,footer.site button{display:none}.wrap{padding:0}}

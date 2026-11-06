@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Declaração de Acessibilidade — Rumo</title>
+<meta name="description" content="Declaração de acessibilidade do Rumo: padrão WCAG 2.2 AA, recursos de teclado, contraste e leitor de tela, limitações conhecidas e como relatar problemas.">
+<meta property="og:title" content="Declaração de Acessibilidade — Rumo">
+<meta property="og:description" content="Declaração de acessibilidade do Rumo: padrão WCAG 2.2 AA, recursos de teclado, contraste e leitor de tela, limitações conhecidas e como relatar problemas.">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/legal.css">
+<script src="/consentimento.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="site"><a href="/" aria-label="Rumo, voltar ao início">← Rumo</a><nav aria-label="Páginas legais"><a href="/">Início</a><a href="/privacidade">Privacidade</a><a href="/termos">Termos</a><a href="/reembolso">Reembolso</a><a href="/cookies">Cookies</a></nav></header>
+<main id="conteudo" class="wrap" tabindex="-1">
+<h1>Declaração de Acessibilidade</h1>
+<p class="updated">Versão {{VERSAO_DOCUMENTOS}} · Última atualização: {{DATA_DOCUMENTOS}}</p>
+
+<div class="alert"><b>Nosso compromisso:</b> queremos que qualquer pessoa consiga usar o Rumo, com mouse, teclado, leitor de tela, zoom ou comando de voz.</div>
+
+<h2 id="padrao">1. Padrão que seguimos</h2>
+<p>Buscamos atender às Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.2, nível AA, em linha com a Lei Brasileira de Inclusão (Lei nº 13.146/2015, art. 63). Fizemos uma revisão interna em {{DATA_DOCUMENTOS}}. O site ainda <strong>não passou por auditoria externa</strong> e seguimos melhorando.</p>
+
+<h2 id="feito">2. O que já fazemos</h2>
+<ul>
+<li><strong>Teclado:</strong> todas as páginas podem ser usadas sem mouse, com foco visível e link "Pular para o conteúdo" no início.</li>
+<li><strong>Contraste:</strong> textos e botões com contraste mínimo de 4,5:1 (3:1 para elementos gráficos e textos grandes).</li>
+<li><strong>Leitor de tela:</strong> estrutura com títulos, regiões e rótulos nos campos; mensagens de erro e avisos são anunciados; imagens e ícones com função têm texto alternativo, e os decorativos são ocultados dos leitores.</li>
+<li><strong>Movimento:</strong> o anúncio de abertura pode ser pulado a qualquer momento e é dispensado automaticamente para quem usa a opção "reduzir movimento" do sistema.</li>
+<li><strong>Zoom e telas pequenas:</strong> o layout se adapta e suporta ampliação do texto até 200%.</li>
+<li><strong>Cadastro:</strong> a confirmação do telefone é por código de SMS digitado na tela, com campo que aceita o preenchimento automático do aparelho.</li>
+<li><strong>Sem avaliações ou promessas inventadas</strong> e sem tempo limitado para ler as páginas.</li>
+</ul>
+
+<h2 id="limites">3. Limitações conhecidas</h2>
+<ul>
+<li>A tela de pagamento embutida é fornecida pelo Stripe; a acessibilidade dela depende do Stripe.</li>
+<li>O reconhecimento de voz e a foto de nota dependem do navegador e do aparelho. Todas as ações também podem ser feitas digitando.</li>
+<li>Alguns gráficos do painel têm os valores em texto ao lado, mas ainda estamos melhorando as descrições.</li>
+</ul>
+
+<h2 id="fale">4. Encontrou uma barreira?</h2>
+<p>Conte para a gente: <a href="mailto:{{EMAIL_SUPORTE}}?subject=Acessibilidade">{{EMAIL_SUPORTE}}</a> (assunto "Acessibilidade"), dizendo a página, o aparelho e a tecnologia assistiva usada. Respondemos em até 5 dias úteis e, quando não der para corrigir logo, oferecemos outra forma de você fazer o que precisa.</p>
+
+<footer class="site"><p>© {{ANO}} Rumo · {{NOME_EMPRESARIAL}} · {{DOCUMENTO}}</p><p>{{ENDERECO}}</p><p><a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a> · <a href="/reembolso">Reembolso e Cancelamento</a> · <a href="/cookies">Cookies</a> · <a href="/acessibilidade">Acessibilidade</a> · <a href="/empresa">Dados da empresa</a> · <button type="button" class="linklike" data-cookie-prefs>Preferências de cookies</button></p></footer>
+</main>
+</body>
+</html>
