@@ -126,7 +126,7 @@ Os dados que estavam no Supabase não são migrados automaticamente (as senhas n
 
 Páginas: `privacidade`, `termos`, `cookies`, `reembolso`, `acessibilidade`, `empresa` (todas em `/nome`). Aviso de cookies em `consentimento.js` (o Pixel da Meta só carrega com consentimento). Preços exibidos vêm de `GET /api/planos`.
 
-**Telefone verificado no cadastro:** no Firebase Console, Authentication > Método de login, ative **Telefone**, confirme que o domínio do site está em *Domínios autorizados* e, em *Política de região de SMS*, permita o Brasil. O envio de SMS pode ser cobrado: ative alerta de orçamento. Sem telefone verificado o servidor recusa concluir o cadastro (`api/perfil.js`). `PHONE_VERIFY_DISABLED=1` existe só para testes locais.
+**Telefone:** o cadastro pede o celular com DDD, mas **não confirma por SMS** (o Firebase exige o plano Blaze para enviar SMS). O número fica em `profiles/{uid}.telefone` (`telefone_verificado: false`), gravado por `api/perfil.js`, e sai na exportação de dados. Como não é confirmado, não serve para provar identidade; a trava de contas duplicadas e de abuso do teste grátis vem do CPF conferido na Receita Federal.
 
 **Arrependimento de 7 dias:** botão "Desistir (7 dias)" no painel chama `api/arrependimento.js` (cancela e estorna a primeira cobrança no Stripe). Excluir a conta agora cancela a assinatura no Stripe antes de apagar os dados.
 

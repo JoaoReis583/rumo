@@ -34,9 +34,8 @@ module.exports = handler('POST', async (req) => {
   const perfilDoc = await firestore.collection('profiles').doc(uid).get();
   const perfil = perfilDoc.exists ? perfilDoc.data() : null;
 
-  // Telefone confirmado (fica no Firebase Authentication)
-  let telefone = null;
-  try { telefone = (await require('./_lib').admin().auth().getUser(uid)).phoneNumber || null; } catch (e) { }
+  // Telefone informado no cadastro (não confirmado por SMS)
+  const telefone = (perfil && perfil.telefone) || null;
   const [budgetsSnap, histDoc, refDoc] = await Promise.all([
     firestore.collection(`users/${uid}/budgets`).get(),
     firestore.collection('ai_history').doc(uid).get(),
@@ -55,7 +54,6 @@ module.exports = handler('POST', async (req) => {
     aceites_e_consentimentos: perfil ? {
       termos_aceitos_em: tsIso(perfil.terms_accepted_at),
       versao_dos_termos: perfil.terms_version || null,
-      telefone_verificado_em: tsIso(perfil.phone_verified_at),
       consentimento_ia: perfil.consents && perfil.consents.ia ? { valor: !!perfil.consents.ia.valor, em: tsIso(perfil.consents.ia.em) } : null,
       consentimento_marketing: perfil.consents && perfil.consents.marketing ? { valor: !!perfil.consents.marketing.valor, em: tsIso(perfil.consents.marketing.em) } : null,
     } : null,

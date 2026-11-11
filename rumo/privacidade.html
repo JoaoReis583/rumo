@@ -43,6 +43,7 @@
 <caption>Dados, finalidades e bases legais</caption>
 <tr><th scope="col">Dado</th><th scope="col">Para quê</th><th scope="col">Base legal (LGPD, art. 7º)</th></tr>
 <tr><td>Nome, e-mail e senha (ou login com Google)</td><td>Criar e proteger sua conta. A senha fica só no Firebase Authentication, em formato protegido; nós não a vemos.</td><td>Execução de contrato (V)</td></tr>
+<tr><td>Telefone celular informado por você (não confirmamos por SMS)</td><td>Contato e segurança da conta.</td><td>Execução de contrato (V); legítimo interesse em garantir a segurança (IX)</td></tr>
 <tr><td>Data de nascimento e CPF</td><td>Conferir identidade e idade (os dois são checados na Receita Federal por um provedor de consulta de CPF), impedir mais de uma conta por pessoa e saber se a pessoa é menor de 18 anos para aplicar as proteções legais. <strong>Não guardamos o número do CPF</strong>: guardamos só um código irreversível (hash com chave secreta), que serve para detectar CPF repetido.</td><td>Cumprimento de obrigação legal de proteção de crianças e adolescentes (II); legítimo interesse em prevenir fraude (IX)</td></tr>
 <tr><td>E-mail do responsável (somente menores de 18)</td><td>Pedir e registrar a autorização do responsável legal.</td><td>Obrigação legal (II); consentimento do responsável (I)</td></tr>
 <tr><td>Dados financeiros que você digita: renda, divisão em %, gastos, rendas extras, contas fixas, metas, orçamento mensal</td><td>Fazer o painel funcionar. Não são dados pessoais sensíveis pela definição da LGPD, mas os tratamos com cuidado reforçado.</td><td>Execução de contrato (V)</td></tr>
@@ -111,7 +112,7 @@
 <div class="tablewrap"><table>
 <caption>Prazos de guarda</caption>
 <tr><th scope="col">Dado</th><th scope="col">Prazo</th></tr>
-<tr><td>Conta, dados financeiros, cadastro (nascimento, código do CPF)</td><td>Enquanto a conta existir. Ao excluir a conta, apagamos tudo dos sistemas de produção imediatamente; eventuais cópias de segurança são eliminadas em até 30 dias.</td></tr>
+<tr><td>Conta, dados financeiros, telefone, cadastro (nascimento, código do CPF)</td><td>Enquanto a conta existir. Ao excluir a conta, apagamos tudo dos sistemas de produção imediatamente; eventuais cópias de segurança são eliminadas em até 30 dias.</td></tr>
 <tr><td>Registros de pagamento, faturas e reembolsos (no Stripe e nos nossos registros)</td><td>5 anos, para cumprir obrigações fiscais e contábeis e permitir defesa em processos.</td></tr>
 <tr><td>Mensagens de suporte e pedidos de privacidade</td><td>Até 5 anos após o atendimento, para comprovar o que foi pedido e respondido.</td></tr>
 <tr><td>Registros de acesso e segurança</td><td>Pelo menor prazo possível; quando a lei exigir (Marco Civil da Internet, art. 15), por 6 meses.</td></tr>

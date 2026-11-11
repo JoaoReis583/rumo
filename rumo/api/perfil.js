@@ -1,7 +1,8 @@
 // POST /api/perfil { acao, ... } — dados de cadastro (nascimento + CPF), autorização de menores e monitoramento.
 //
 // acao: 'obter'       → situação do cadastro da pessoa logada + pedidos/dependentes se ela for responsável
-// acao: 'salvar'      → { nascimento: 'YYYY-MM-DD', cpf, aceite: { versao }, marketing }
+// acao: 'salvar'      → { telefone, nascimento: 'YYYY-MM-DD', cpf, aceite: { versao }, marketing }
+//                        (o telefone é informado pela pessoa e NÃO é confirmado por SMS),
 //                        valida o CPF de verdade (Receita Federal), registra o aceite dos Termos e grava o perfil
 // acao: 'consentir'   → { tipo: 'ia' | 'marketing', valor: boolean } grava (ou revoga) um consentimento, com data
 // acao: 'responsavel' → { email } (só menor de 18) pede autorização a uma conta de maior já cadastrada no Rumo
@@ -98,6 +99,9 @@ module.exports = handler('POST', async (req) => {
     if ((await profRef(u.uid).get()).exists) throw new HttpError(409, 'Seu cadastro já foi concluído.');
     // Aceite dos Termos e da Política de Privacidade (clique afirmativo), guardado com data e versão.
     if (!b.aceite || b.aceite.termos !== true || !versaoOk(b.aceite.versao)) throw new HttpError(400, 'É preciso aceitar os Termos de Uso e a Política de Privacidade.');
+    // Telefone informado (sem confirmação por SMS): celular brasileiro com DDD, guardado como +55DDDNUMERO.
+    const tel = soDigitos(b.telefone);
+    if (!/^[1-9][1-9]9\d{8}$/.test(tel)) throw new HttpError(400, 'Celular inválido. Use DDD + 9 + número, por exemplo (11) 91234-5678.');
     const nascimento = String(b.nascimento || '');
     const cpf = soDigitos(b.cpf);
     if (!dataIsoValida(nascimento)) throw new HttpError(400, 'Data de nascimento inválida.');
@@ -137,6 +141,8 @@ module.exports = handler('POST', async (req) => {
         birth_date: nascimento,
         cpf_hash: hash,
         cpf_verificado_em: agora,
+        telefone: '+55' + tel,
+        telefone_verificado: false,
         is_minor: menor,
         can_use: !menor,
         guardian_status: 'none',

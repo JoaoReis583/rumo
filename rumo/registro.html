@@ -71,7 +71,7 @@
     <label for="aName">Nome</label><input id="aName" autocomplete="name" maxlength="80">
     <label for="aMail">E-mail</label><input id="aMail" type="email" autocomplete="email" required>
     <label for="aPass">Senha (mínimo 8 caracteres)</label><input id="aPass" type="password" autocomplete="new-password" required aria-describedby="aPassH">
-    <p class="hint" id="aPassH">Pedimos só o necessário: nome, e-mail e senha agora; nascimento e CPF na próxima etapa.</p>
+    <p class="hint" id="aPassH">Pedimos só o necessário: nome, e-mail e senha agora; celular, nascimento e CPF na próxima etapa.</p>
     <div class="err" id="aErr" role="alert"></div>
     <button class="btn" id="aGo" type="submit">Criar conta</button>
     
@@ -79,6 +79,8 @@
 
   <!-- Etapa 2: nascimento + CPF (conferidos na Receita Federal) + aceite dos Termos -->
   <form id="fDados" class="hide" novalidate>
+    <label for="dTel">Celular com DDD</label><input id="dTel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(11) 91234-5678" maxlength="15" aria-describedby="dTelH" required>
+    <p class="hint" id="dTelH">Usamos o celular só para contato e para a segurança da conta. Não enviamos código por SMS. <a href="/privacidade#dados" target="_blank" rel="noopener">Como tratamos seus dados<span class="sr-only"> (abre em nova aba)</span></a>.</p>
     <label for="dNasc">Data de nascimento</label><input id="dNasc" type="date" min="1900-01-01" autocomplete="bday" required>
     <label for="dCpf">CPF</label><input id="dCpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
     <p class="hint">Conferimos o CPF e a data de nascimento na Receita Federal para confirmar sua identidade e idade e impedir contas duplicadas. Os dois precisam ser da mesma pessoa. Não guardamos o número do CPF, só uma versão protegida (hash).</p>
@@ -220,13 +222,19 @@
 
   // Máscara e conferência do CPF no navegador (a conferência de verdade é feita no servidor)
   $('#dCpf').addEventListener('input', e => { const d = e.target.value.replace(/\D/g, '').slice(0, 11); e.target.value = d.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2') });
+  $('#dTel').addEventListener('input', e => {
+    const d = e.target.value.replace(/\D/g, '').slice(0, 11);
+    e.target.value = d.length > 7 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : d.length > 2 ? `(${d.slice(0, 2)}) ${d.slice(2)}` : d;
+  });
+  const foneOk = d => /^[1-9][1-9]9\d{8}$/.test(d); // DDD válido + celular (11 dígitos, começa com 9)
   const cpfOk = v => { const c = v.replace(/\D/g, ''); if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false; for (const n of [9, 10]) { let s = 0; for (let i = 0; i < n; i++) s += +c[i] * (n + 1 - i); if (((s * 10) % 11) % 10 !== +c[n]) return false } return true };
   const hojeIso = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') };
   $('#dNasc').max = hojeIso();
 
   $('#fDados').addEventListener('submit', async ev => {
     ev.preventDefault(); if (busy) return;
-    const nasc = $('#dNasc').value, cpf = $('#dCpf').value, err = $('#dErr'), btn = $('#dGo');
+    const nasc = $('#dNasc').value, cpf = $('#dCpf').value, tel = $('#dTel').value.replace(/\D/g, ''), err = $('#dErr'), btn = $('#dGo');
+    if (!foneOk(tel)) { err.textContent = 'Digite um celular válido com DDD, por exemplo (11) 91234-5678.'; $('#dTel').focus(); return }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(nasc) || nasc > hojeIso() || nasc < '1900-01-01') { err.textContent = 'Informe sua data de nascimento.'; return }
     if (!cpfOk(cpf)) { err.textContent = 'CPF inválido. Confira os números.'; return }
     if (!$('#dAceite').checked) { err.textContent = 'Para continuar, marque que leu e aceita os Termos de Uso e a Política de Privacidade.'; $('#dAceite').focus(); return }
@@ -234,7 +242,7 @@
     try {
       const versao = (document.querySelector('meta[name=rumo-docs-versao]') || {}).content || '';
       const cons = (window.RumoConsent && window.RumoConsent.get()) || null;
-      const p = await perfil({ acao: 'salvar', nascimento: nasc, cpf, aceite: { termos: true, versao }, marketing: !!(cons && cons.marketing) });
+      const p = await perfil({ acao: 'salvar', telefone: tel, nascimento: nasc, cpf, aceite: { termos: true, versao }, marketing: !!(cons && cons.marketing) });
       busy = false;
       // Marketing: só para maior de idade que aceitou os cookies de marketing. Menor: desliga o Pixel (ECA Digital).
       try {
