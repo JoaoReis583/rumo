@@ -324,6 +324,7 @@
       $('#foneEnvio').classList.add('hide'); $('#foneCodigo').classList.remove('hide');
       contagem(); $('#pCode').value = ''; $('#pCode').focus();
     } catch (e) {
+      console.error('SMS erro:', e.code, e.message);
       if (e && e.code === 'auth/provider-already-linked') { busy = false; return seguir() }
       err.textContent = authMsg(e); $('#foneEnvio').classList.remove('hide'); $('#foneCodigo').classList.add('hide');
     } finally { busy = false; btn.disabled = false; btn.textContent = 'Enviar código por SMS' }
