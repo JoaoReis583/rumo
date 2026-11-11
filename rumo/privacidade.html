@@ -43,7 +43,6 @@
 <caption>Dados, finalidades e bases legais</caption>
 <tr><th scope="col">Dado</th><th scope="col">Para quê</th><th scope="col">Base legal (LGPD, art. 7º)</th></tr>
 <tr><td>Nome, e-mail e senha (ou login com Google)</td><td>Criar e proteger sua conta. A senha fica só no Firebase Authentication, em formato protegido; nós não a vemos.</td><td>Execução de contrato (V)</td></tr>
-<tr><td>Telefone celular, confirmado por código SMS</td><td>Confirmar que a conta é de uma pessoa real, evitar contas duplicadas e abuso do teste grátis, e dar mais segurança à conta.</td><td>Legítimo interesse em prevenir fraude e garantir a segurança (IX); execução de contrato (V)</td></tr>
 <tr><td>Data de nascimento e CPF</td><td>Conferir identidade e idade (os dois são checados na Receita Federal por um provedor de consulta de CPF), impedir mais de uma conta por pessoa e saber se a pessoa é menor de 18 anos para aplicar as proteções legais. <strong>Não guardamos o número do CPF</strong>: guardamos só um código irreversível (hash com chave secreta), que serve para detectar CPF repetido.</td><td>Cumprimento de obrigação legal de proteção de crianças e adolescentes (II); legítimo interesse em prevenir fraude (IX)</td></tr>
 <tr><td>E-mail do responsável (somente menores de 18)</td><td>Pedir e registrar a autorização do responsável legal.</td><td>Obrigação legal (II); consentimento do responsável (I)</td></tr>
 <tr><td>Dados financeiros que você digita: renda, divisão em %, gastos, rendas extras, contas fixas, metas, orçamento mensal</td><td>Fazer o painel funcionar. Não são dados pessoais sensíveis pela definição da LGPD, mas os tratamos com cuidado reforçado.</td><td>Execução de contrato (V)</td></tr>
@@ -62,7 +61,7 @@
 <div class="alert"><b>Importante:</b> quando você manda uma mensagem ao assistente, enviamos a um provedor de inteligência artificial de terceiros (Google Gemini ou Anthropic Claude, conforme a configuração do serviço) a sua pergunta e um resumo dos seus dados do mês: renda, planejado e gasto por categoria, contas fixas, metas e últimos lançamentos. Se você anexar a foto de uma nota ou comprovante, ela também é enviada.</div>
 <ul>
 <li>O envio só acontece quando <strong>você</strong> envia uma mensagem, e só depois de você aceitar o aviso da primeira utilização. Você pode revogar esse aceite em Configurações, no painel.</li>
-<li>Não enviamos seu nome, e-mail, CPF ou telefone ao provedor de IA.</li>
+<li>Não enviamos seu nome, e-mail ou CPF ao provedor de IA.</li>
 <li>A conversa não fica guardada por nós, exceto se você ligar o histórico na nuvem (opcional).</li>
 <li>Usamos a API comercial dos provedores. Segundo os termos deles, o conteúdo enviado por API não é usado para treinar os modelos. Veja os termos do Google Gemini (<a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">ai.google.dev/gemini-api/terms</a>) e a política da Anthropic (<a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">anthropic.com/legal/privacy</a>). O provedor pode guardar o conteúdo por um período limitado para segurança e prevenção de abuso, conforme esses termos.</li>
 <li><strong>Não envie</strong> senhas, números de cartão, documentos ou dados de outras pessoas. Notas fiscais podem trazer CPF/nome de terceiros: se for o caso, cubra esses dados antes de fotografar.</li>
@@ -75,7 +74,7 @@
 <div class="tablewrap"><table>
 <caption>Fornecedores e finalidades</caption>
 <tr><th scope="col">Fornecedor</th><th scope="col">Para quê</th><th scope="col">Onde trata os dados</th></tr>
-<tr><td>Google (Firebase Authentication, Cloud Firestore, verificação por SMS e reCAPTCHA)</td><td>Login, banco de dados, envio e conferência do código SMS, proteção contra robôs</td><td>Brasil ou EUA, conforme a região do projeto; SMS por operadoras parceiras do Google</td></tr>
+<tr><td>Google (Firebase Authentication e Cloud Firestore)</td><td>Login e banco de dados</td><td>Brasil ou EUA, conforme a região do projeto</td></tr>
 <tr><td>Vercel</td><td>Hospedagem do site e das funções de servidor</td><td>EUA e outras regiões</td></tr>
 <tr><td>Stripe</td><td>Cobrança por cartão, faturas, reembolsos e antifraude</td><td>EUA e outras regiões</td></tr>
 <tr><td>Provedor de consulta de CPF (CPFHub)</td><td>Conferir CPF e data de nascimento na Receita Federal</td><td>Conforme o provedor</td></tr>
@@ -112,7 +111,7 @@
 <div class="tablewrap"><table>
 <caption>Prazos de guarda</caption>
 <tr><th scope="col">Dado</th><th scope="col">Prazo</th></tr>
-<tr><td>Conta, dados financeiros, telefone, cadastro (nascimento, código do CPF)</td><td>Enquanto a conta existir. Ao excluir a conta, apagamos tudo dos sistemas de produção imediatamente; eventuais cópias de segurança são eliminadas em até 30 dias.</td></tr>
+<tr><td>Conta, dados financeiros, cadastro (nascimento, código do CPF)</td><td>Enquanto a conta existir. Ao excluir a conta, apagamos tudo dos sistemas de produção imediatamente; eventuais cópias de segurança são eliminadas em até 30 dias.</td></tr>
 <tr><td>Registros de pagamento, faturas e reembolsos (no Stripe e nos nossos registros)</td><td>5 anos, para cumprir obrigações fiscais e contábeis e permitir defesa em processos.</td></tr>
 <tr><td>Mensagens de suporte e pedidos de privacidade</td><td>Até 5 anos após o atendimento, para comprovar o que foi pedido e respondido.</td></tr>
 <tr><td>Registros de acesso e segurança</td><td>Pelo menor prazo possível; quando a lei exigir (Marco Civil da Internet, art. 15), por 6 meses.</td></tr>

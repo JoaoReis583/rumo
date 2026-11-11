@@ -1,7 +1,7 @@
 // POST /api/perfil { acao, ... } — dados de cadastro (nascimento + CPF), autorização de menores e monitoramento.
 //
 // acao: 'obter'       → situação do cadastro da pessoa logada + pedidos/dependentes se ela for responsável
-// acao: 'salvar'      → { nascimento: 'YYYY-MM-DD', cpf, aceite: { versao }, marketing } exige telefone já verificado por SMS (Firebase),
+// acao: 'salvar'      → { nascimento: 'YYYY-MM-DD', cpf, aceite: { versao }, marketing }
 //                        valida o CPF de verdade (Receita Federal), registra o aceite dos Termos e grava o perfil
 // acao: 'consentir'   → { tipo: 'ia' | 'marketing', valor: boolean } grava (ou revoga) um consentimento, com data
 // acao: 'responsavel' → { email } (só menor de 18) pede autorização a uma conta de maior já cadastrada no Rumo
@@ -25,14 +25,6 @@ const maskEmail = (e) => {
 
 const profRef = (uid) => db().collection('profiles').doc(uid);
 
-// Telefone confirmado por SMS (Firebase Phone Auth). Lemos direto do Firebase Auth, que é a fonte da verdade:
-// o telefone só entra na conta depois que a pessoa digitou o código recebido.
-// PHONE_VERIFY_DISABLED=1 só para testes locais. Nunca use em produção.
-async function telefoneDe(uid) {
-  if (process.env.PHONE_VERIFY_DISABLED === '1') return '+5500000000000';
-  try { return (await admin().auth().getUser(uid)).phoneNumber || null; }
-  catch (e) { console.error('telefoneDe:', e && e.message); return null; }
-}
 const CONSENT_TIPOS = ['ia', 'marketing'];
 const versaoOk = (v) => /^\d{4}-\d{2}-\d{2}$/.test(String(v || ''));
 
@@ -98,16 +90,12 @@ module.exports = handler('POST', async (req) => {
     const p = await lerPerfil(u.uid);
     if (p && p.can_use) await garantirTeste(u.uid); // 7 dias grátis (uma vez só) para quem já pode usar
     const dep = await dependentesDe(u.uid);
-    const fone = p ? null : await telefoneDe(u.uid); // só precisa saber enquanto o cadastro não termina
-    return { ...resumoPerfil(p), telefone_ok: p ? true : !!fone, dependentes_pendentes: dep.pendentes, dependentes_aprovados: dep.aprovados };
+    return { ...resumoPerfil(p), dependentes_pendentes: dep.pendentes, dependentes_aprovados: dep.aprovados };
   }
 
   if (acao === 'salvar') {
     await rateLimit(req, 'perfil-salvar', 10, 60 * 60 * 1000);
     if ((await profRef(u.uid).get()).exists) throw new HttpError(409, 'Seu cadastro já foi concluído.');
-    // Telefone verificado é obrigatório (falha fechada): sem ele o cadastro não conclui.
-    const fone = await telefoneDe(u.uid);
-    if (!fone) throw new HttpError(400, 'Confirme seu telefone por SMS antes de concluir o cadastro.');
     // Aceite dos Termos e da Política de Privacidade (clique afirmativo), guardado com data e versão.
     if (!b.aceite || b.aceite.termos !== true || !versaoOk(b.aceite.versao)) throw new HttpError(400, 'É preciso aceitar os Termos de Uso e a Política de Privacidade.');
     const nascimento = String(b.nascimento || '');
@@ -152,7 +140,6 @@ module.exports = handler('POST', async (req) => {
         is_minor: menor,
         can_use: !menor,
         guardian_status: 'none',
-        phone_verified_at: agora,
         terms_accepted_at: agora,
         terms_version: String(b.aceite.versao),
         // Marketing (Pixel/CAPI da Meta) só para maior de idade que marcou que aceita
